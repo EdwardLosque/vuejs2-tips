@@ -1,0 +1,38 @@
+// Best method to update data
+
+// :contador.sync="contador" === @update:contador="contador = $event"
+
+<div id="app">
+  {{contador}}
+  <componentPai>
+    :contador.sync="contador" 
+  </componentPai>
+</div>
+
+<script type="module">
+const MeuBotao = {
+  name: "MeuBotao",
+  props: ["contador"],
+  data() {
+    return {
+      contadorComponente: this.contador
+    }
+  },
+  template: `<button @click="incrementar">Clique {{contadorComponente}}</button>`,
+  methods: {
+    incrementar() {
+      this.contadorComponente++;
+      this.$emit("update:contador", this.contadorComponente)
+    }
+  }
+}
+
+const vm = new Vue({
+  el: "#app",
+  data: {
+    contador: 0,
+  },
+  components: {
+    MeuBotao
+  },
+})
